@@ -19,3 +19,17 @@ If you choose not to mount a persistent volume OpenDJ will start OK - but you wi
 
 # TODO:
 Create a strategy for changing the password.  If a secrets volume is present (k8), use that to set the DJ password?
+
+
+strategy
+- instance.loc = /opt/opendj/data
+run.sh 
+if does not exist 
+  run setup 
+ if exists and version same 
+    start opendj
+  if exits and version older
+     run upgrade and start 
+     
+    
+  

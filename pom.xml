@@ -6,7 +6,7 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.forgerock.frstack</groupId>
+    <groupId>com.forgerock.docker</groupId>
     <artifactId>fretes</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -28,7 +28,7 @@
         <!-- SNAPSHOT software versions. -->
         <openamVersion>14.0.0-SNAPSHOT</openamVersion>
         <opendjVersion>4.0.0-SNAPSHOT</opendjVersion>
-        <openidmVersion>4.1.0-SNAPSHOT</openidmVersion>
+        <openidmVersion>5.0.0-SNAPSHOT</openidmVersion>
         <openigVersion>5.0.0-SNAPSHOT</openigVersion>
     </properties>
 
