@@ -1,0 +1,9 @@
+#Example of how to run OpenDJ with a custom configuration
+# This will mount the cts directory on the bootstrap - so we get a cts configuration
+# See README.md
+opendj:
+  build: .
+  ports:
+   - "1389:4444:636"
+  volumes:
+    - ./cts:/opt/opendj/bootstrap

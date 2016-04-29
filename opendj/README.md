@@ -1,35 +1,46 @@
-# ForgeRock OpenDJ nightly build
+# ForgeRock OpenDJ Docker image
 
 Listens on 389/636/4444
 
 Default bind credentials are CN=Directory Manager, password is 'password'
 
-All writable directories (persisted data) are collected up under /opt/opendj/instances/instance1
+(TODO: set password from a secret volume)
+
+
+All writable files and configuration (persisted data) are under /opt/opendj/data
 
 To run with Docker (example)
 ```
 mkdir dj    # Make an instance dir to persist data
-docker run -i -t -v `pwd`/dj:/opt/opendj/instances/instance1 forgerock/opendj:latest
+docker run -i -t -v `pwd`/dj:/opt/opendj/data forgerock/opendj:nightly
 ```
 
-For Kubernetes mount a PV on /opt/opendj/instance/instance1
+For Kubernetes mount a PV on /opt/opendj/data
 
-If you choose not to mount a persistent volume OpenDJ will start OK - but you will lose your data when the container is removed.
+If you choose not to mount a persistent volume OpenDJ will start OK - but you will lose your data when the container (and assoicated volume) is removed.
+
+
+
+# Bootstrapping the configuration
+
+When the image comes up, it looks for a backend database and config
+under /opt/opendj/data
+
+If no database exists, it looks under /opt/opendj/boosttrap and runs
+setup.sh
+
+The default setup.sh creates a sampple back end. For a more complex
+configuration, mount your own custom setup.sh on bootstrap.
+
+An example is provided in the cts/ directory along with a sample
+docker-compose file. This example create a fairly complex backend
+and sets custom java properties. 
+
 
 
 # TODO:
-Create a strategy for changing the password.  If a secrets volume is present (k8), use that to set the DJ password?
+Get password from mounted secret volume
 
 
-strategy
-- instance.loc = /opt/opendj/data
-run.sh 
-if does not exist 
-  run setup 
- if exists and version same 
-    start opendj
-  if exits and version older
-     run upgrade and start 
-     
     
   

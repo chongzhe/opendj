@@ -11,14 +11,17 @@
 
 cd /opt/opendj
 
-# Instance dir does not exist?
-if [ ! -d instances/instance1/config ] ; then
-  # Copy the template
-  mkdir -p instances/instance1
-  echo "Instance Directory is empty. Creating new instance from template"
-  cp -r instances/template/* instances/instance1
-fi
-echo "./instances/instance1" > instance.loc
 
+# Instance dir does not exist?
+if [ ! -d ./data/config ] ; then
+  echo "Instance Directory is empty. Creating new DJ instance"
+  /opt/opendj/bootstrap/setup.sh
+
+# todo: Check /opt/opendj/data/config/buildinfo
+# Run upgrade if the server is older
+
+fi
+
+echo "Starting OpenDJ"
 
 ./bin/start-ds --nodetach
