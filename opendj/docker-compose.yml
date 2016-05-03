@@ -4,6 +4,8 @@
 opendj:
   build: .
   ports:
-   - "1389:4444:636"
+   - "389:389"
   volumes:
     - ./cts:/opt/opendj/bootstrap
+# uncomment to create a persistent directory
+#    - /tmp/opendj:/opt/opendj/data

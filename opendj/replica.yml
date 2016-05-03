@@ -1,0 +1,17 @@
+# todo: docker-compose to demonstrate replication
+version: '2'
+services:
+  opendj1:
+    image: opendj
+    ports:
+     - "389:389"
+    volumes:
+      - ./cts:/opt/opendj/bootstrap
+      - /tmp/opendj1:/opt/opendj/data
+  opendj2:
+    image: opendj
+    ports:
+     - "389:1389"
+    volumes:
+      - ./cts:/opt/opendj/bootstrap
+      - /tmp/opendj2:/opt/opendj/data

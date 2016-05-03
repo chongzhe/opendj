@@ -39,7 +39,9 @@ and sets custom java properties.
 
 
 # TODO:
-Get password from mounted secret volume
+- Get password from mounted secret volume
+- Setup replication with second server
+- Set env vars for config (server hostname, )
 
 
     

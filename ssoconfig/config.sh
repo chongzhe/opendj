@@ -43,6 +43,8 @@ function get_template
 	  done
     echo "$line" >>/tmp/am.properties
 	done
+	echo "AM Config file:"
+	cat /tmp/am.properties
 }
 
 function apply_config {

@@ -33,7 +33,7 @@ CTS_ADMIN_PW=secret12
 cat > $T/setup.props <<EOF
 # Sample properties file to set up the OpenDJ directory server
 hostname                      = localhost
-ldapPort                      = 1389
+ldapPort                      = 389
 generateSelfSignedCertificate = true
 enableStartTLS                = true
 ldapsPort                     = 636
@@ -171,7 +171,7 @@ bin/ldapmodify --port $PORT --bindDN "$USER" --bindPassword $PASS \
 # TODO: this is from the following script
 # https://forgerock.org/openam/doc/bootstrap/resources/cts-add-indexes.txt
 echo "... Adding CTS Indexes ..."
-dsconfig -p 4444 -D "cn=Directory Manager" -w $PASS -F bootstrap/cts-add-indexes.txt -X -n
+bin/dsconfig -p 4444 -D "cn=Directory Manager" -w $PASS -F bootstrap/cts-add-indexes.txt -X -n
 
 # Add the CTS Container Files
 echo ""
