@@ -3,6 +3,15 @@
 ## Warning
 **This code is not supported by ForgeRock and it is your responsibility to verify that the software is suitable and safe for use.**
 
+## Contributing 
+
+If you are reading this on github, this is a mirror of the master 
+repo at https://stash.forgerock.org/projects/DOCKER/repos/docker/browse 
+
+Any pull requests or issues should be filed on the stash project. You 
+will need a ForgeRock community account to create PRs or issues.
+
+
 ## About
 
 The provided Makefile downloads nightly builds from ForgeRock's maven repo
