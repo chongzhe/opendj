@@ -19,7 +19,7 @@ mkdir $T
 # Define variables used in this script. Make them specific to your deployment.
 
 #LDIF_DIR=/usr/local/tomcat/webapps/openam/WEB-INF/template/ldif/sfha
-LDIF_DIR=/opt/opendj/bootstrap/sfha
+LDIF_DIR=/opt/opendj/bootstrap/cts/sfha
 
 USER="cn=Directory Manager"
 PASS="password"

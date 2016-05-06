@@ -1,10 +1,10 @@
 # ForgeRock OpenDJ Docker image
 
-Listens on 389/636/4444
+Listens on 389/636/4444/8989
 
 Default bind credentials are CN=Directory Manager, password is 'password'
 
-(TODO: set password from a secret volume)
+(TODO: set password from a secret volume and/or env variable)
 
 
 All writable files and configuration (persisted data) are under /opt/opendj/data
@@ -20,29 +20,29 @@ For Kubernetes mount a PV on /opt/opendj/data
 If you choose not to mount a persistent volume OpenDJ will start OK - but you will lose your data when the container (and assoicated volume) is removed.
 
 
-
 # Bootstrapping the configuration
 
-When the image comes up, it looks for a backend database and config
+When the image comes up, it looks for a backend database and configuration
 under /opt/opendj/data
 
-If no database exists, it looks under /opt/opendj/boosttrap and runs
-setup.sh
+If no database exists, the script /opt/opendj/bootstrap/setup.sh will be
+ run.  The default script can be overridden by setting the environment
+ variable BOOTSTRAP to point to the script name, and/or by mounting
+ a volume on top of /opt/opendj/bootstrap/ that contains a setup.sh
+ script. 
+ 
+The default setup.sh creates a sample back end. For a more complex
+/configuration, mount your own custom setup.sh on bootstrap.
 
-The default setup.sh creates a sampple back end. For a more complex
-configuration, mount your own custom setup.sh on bootstrap.
+A couple of examples are provided under the bootstrap directory:
 
-An example is provided in the cts/ directory along with a sample
-docker-compose file. This example create a fairly complex backend
-and sets custom java properties. 
-
+* bootstrap/cts/  - configures DJ for an OpenAM CTS server 
+* bootstrap/replica - sets up a master and a replica server. See dj-replica.yml
+for an example of how to invoke this with docker compose.
 
 
 # TODO:
 - Get password from mounted secret volume
-- Setup replication with second server
-- Set env vars for config (server hostname, )
-
 
     
   

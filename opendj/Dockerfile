@@ -15,12 +15,12 @@ WORKDIR /opt/opendj
 RUN echo "/opt/opendj/data" > /opt/opendj/instance.loc  && \
     mkdir -p /opt/opendj/data/lib/extensions
 
-# Add a default setup script. This can get replaced by mounting a volume on /opt/opendj/boostrap
-ADD setup.sh /opt/opendj/bootstrap/setup.sh
 
-COPY Dockerfile /
+ADD Dockerfile /
 
-EXPOSE 389 636 4444
+ADD bootstrap/ /opt/opendj/bootstrap/
+
+EXPOSE 389 636 4444 8989
 
 ADD run.sh /opt/opendj/run.sh
 

@@ -8,3 +8,4 @@ echo "Setting up default OpenDJ instance"
   --acceptLicense --no-prompt --doNotStart
 
 
+# run.sh assumes DJ must be started - so make sure setup.sh shuts it down

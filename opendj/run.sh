@@ -14,14 +14,20 @@ cd /opt/opendj
 
 # Instance dir does not exist?
 if [ ! -d ./data/config ] ; then
-  echo "Instance Directory is empty. Creating new DJ instance"
-  /opt/opendj/bootstrap/setup.sh
+  echo "Instance data Directory is empty. Creating new DJ instance"
+
+  BOOTSTRAP=${BOOTSTRAP:-/opt/opendj/bootstrap/setup.sh}
+
+  echo "Running $BOOTSTRAP"
+  $BOOTSTRAP
+
+fi
 
 # todo: Check /opt/opendj/data/config/buildinfo
 # Run upgrade if the server is older
 
-fi
 
 echo "Starting OpenDJ"
 
+# todo: Test to see if it is already running
 ./bin/start-ds --nodetach
