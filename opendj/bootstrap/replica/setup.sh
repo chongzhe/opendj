@@ -5,15 +5,17 @@ echo "Setting up  OpenDJ instance"
 
 
 DJ_HOSTNAME=${DJ_HOSTNAME:-localhost}
-PASSWORD=${PASSWORD:-password}
-echo "Hostname is $DJ_HOSTNAME"
+PASSWORD=`cat $DIR_MANAGER_PW_FILE`
 
+
+echo "Hostname is $DJ_HOSTNAME"
+#echo "Password is $PASSWORD"
 
 cd /opt/opendj
 
 
 /opt/opendj/setup --cli -p 389 --ldapsPort 636 --enableStartTLS --generateSelfSignedCertificate \
-  --sampleData 5 --baseDN "dc=example,dc=com" -h $DJ_HOSTNAME --rootUserPassword password \
+  --sampleData 5 --baseDN "dc=example,dc=com" -h $DJ_HOSTNAME --rootUserPassword $PASSWORD \
   --acceptLicense --no-prompt \
   --doNotStart
 
@@ -41,7 +43,7 @@ bin/dsreplication enable --host1 $DJ_HOSTNAME --port1 4444\
 echo "initializing replication"
 
 bin/dsreplication initialize --baseDN "dc=example,dc=com" \
-  --adminUID admin --adminPassword password \
+  --adminUID admin --adminPassword $PASSWORD \
   --hostSource $DJ_HOSTNAME --portSource 4444 \
   --hostDestination $DJ_REPLICA_HOST --portDestination 4444 -X -n
 

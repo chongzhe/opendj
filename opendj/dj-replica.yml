@@ -1,9 +1,11 @@
 #Example of how to run two OpenDJ instances replicated
-# test with docker-compose -f replica.yml up --force-recreate
+# docker-compose -f replica.yml build
+# test with docker-compose -f dj-replica.yml up - -force-recreate --build
 version: '2'
 services:
   opendj1:
-    image: forgerock/opendj:nightly
+    #image: forgerock/opendj:nightly
+    build: .
     ports:
       - "389:389"
     networks:
@@ -13,7 +15,8 @@ services:
       DJ_REPLICA_HOST: opendj2
       BOOTSTRAP: /opt/opendj/bootstrap/replica/setup.sh
   opendj2:
-    image: "forgerock/opendj:nightly"
+    #image: forgerock/opendj:nightly
+    build: .
     ports:
      - "1389:389"
     networks:

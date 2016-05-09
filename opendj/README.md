@@ -3,9 +3,7 @@
 Listens on 389/636/4444/8989
 
 Default bind credentials are CN=Directory Manager, password is 'password'
-
-(TODO: set password from a secret volume and/or env variable)
-
+(but you should change this, see below)
 
 All writable files and configuration (persisted data) are under /opt/opendj/data
 
@@ -41,8 +39,16 @@ A couple of examples are provided under the bootstrap directory:
 for an example of how to invoke this with docker compose.
 
 
-# TODO:
-- Get password from mounted secret volume
+# Passwords
 
-    
-  
+The Dockerfile expects a password file to be mounted at 
+the path pointed to by the env var DIR_MANAGER_PW_FILE.
+The default path is /var/secrets/dirmanager.pw, and the default
+value is "password".
+
+Typically you will mount a Docker volume or Kubernetes 
+secret volume on this path to securely provide the password.
+
+This should only be needed at setup time as the directory will
+start without the password. However, utilities that you 
+might want to run in the container may want the password.

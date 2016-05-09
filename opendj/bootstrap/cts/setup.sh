@@ -20,13 +20,13 @@ mkdir $T
 
 #LDIF_DIR=/usr/local/tomcat/webapps/openam/WEB-INF/template/ldif/sfha
 LDIF_DIR=/opt/opendj/bootstrap/cts/sfha
-
+PASS=`cat $DIR_MANAGER_PW_FILE`
 USER="cn=Directory Manager"
-PASS="password"
 PORT=4444
 CTS_DN="dc=cts,dc=forgerock,dc=com"
 
-CTS_ADMIN_PW=secret12
+# Set CTS password the same as dir manager
+CTS_ADMIN_PW="$PASS"
 
 
 # Create a properties file for the OpenDJ install
@@ -171,7 +171,7 @@ bin/ldapmodify --port $PORT --bindDN "$USER" --bindPassword $PASS \
 # TODO: this is from the following script
 # https://forgerock.org/openam/doc/bootstrap/resources/cts-add-indexes.txt
 echo "... Adding CTS Indexes ..."
-bin/dsconfig -p 4444 -D "cn=Directory Manager" -w $PASS -F bootstrap/cts-add-indexes.txt -X -n
+bin/dsconfig -p 4444 -D "cn=Directory Manager" -w $PASS -F bootstrap/cts/cts-add-indexes.txt -X -n
 
 # Add the CTS Container Files
 echo ""
@@ -194,7 +194,7 @@ echo ""
 echo "Your CTS External Store has been configured."
 
 echo "Setting custom java properties"
-cp bootstrap/java.properties /opt/opendj/data/config
+cp bootstrap/cts/java.properties /opt/opendj/data/config
 bin/dsjavaproperties
 
 
