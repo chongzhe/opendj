@@ -3,6 +3,7 @@
 # Override these with env vars to change the defaults
 TAG ?= nightly
 REPO ?=forgerock
+PUSH ?= true
 
 all: openam openidm opendj ssoadm ssoconfig apache-agent
 
@@ -23,6 +24,7 @@ openidm: download
 
 opendj: download
 	docker build -t $(REPO)/$@:$(TAG) $@
+
 
 openig: download
 	docker build -t $(REPO)/$@:$(TAG) $@

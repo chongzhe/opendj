@@ -9,13 +9,13 @@ PASSWORD=`cat $DIR_MANAGER_PW_FILE`
 
 
 echo "Hostname is $DJ_HOSTNAME"
-#echo "Password is $PASSWORD"
+echo "Password is $PASSWORD"
 
 cd /opt/opendj
 
 
 /opt/opendj/setup --cli -p 389 --ldapsPort 636 --enableStartTLS --generateSelfSignedCertificate \
-  --sampleData 5 --baseDN "dc=example,dc=com" -h $DJ_HOSTNAME --rootUserPassword $PASSWORD \
+  --sampleData 5 --baseDN "dc=example,dc=com" -h $DJ_HOSTNAME --rootUserPassword "$PASSWORD" \
   --acceptLicense --no-prompt \
   --doNotStart
 

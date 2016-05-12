@@ -3,13 +3,21 @@
 # Container puts everything in /var/tmp
 cd /var/tmp
 
-OPENAM_CONFIG_URL=${OPENAM_CONFIG_URL:-https://raw.githubusercontent.com/ForgeRock/stack-config/master/openam/01_config.properties}
+OPENAM_CONFIG_URL=${OPENAM_CONFIG_URL:-https://raw.githubusercontent.com/ForgeRock/fretes/master/config/openam/01_config.properties}
 
 LB_PRIMARY_URL=${LB_PRIMARY_URL:-http://openam.example.com/openam}
 COOKIE_DOMAIN=${COOKIE_DOMAIN:-.example.com}
 
 # This is the INTERNAL URL that of the openam host - not external
 SERVER_URL=${SERVER_URL:-http://openam:80/openam}
+
+# Assumes Kube has mounted a secret volume for us.
+# Kinda hacky - we should make it more configurable
+PW=`cat /var/secrets/dirmanager.pw`
+
+# DirManager password - for now the same for both
+DS_DIRMGRPASSWD=${PW:-password}
+USERSTORE_PASSWD=${PW:-password}
 
 
 # Wait for OpenAM to come up before configuring it

@@ -1,3 +1,10 @@
 {
-  "handler": "ClientHandler"
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config" : {
+      "status": 200,
+      "entity": "Welcome to OpenIG"
+    }
+
+  }
 }
