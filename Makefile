@@ -1,11 +1,12 @@
-.PHONY: clean download openam openidm opendj ssoadm ssoconfig openig apache-agent
+# If you edit this with an IDE beware of converting tabs to spaces (Make wants tabs)
+.PHONY: clean download openam openidm opendj ssoadm ssoconfig openig apache-agent resty foo
 
 # Override these with env vars to change the defaults
 TAG ?= nightly
 REPO ?=forgerock
-PUSH ?= true
+#PUSH ?= true
 
-all: openam openidm opendj ssoadm ssoconfig apache-agent
+all: openam openidm opendj ssoadm ssoconfig apache-agent resty
 
 # Clean up any downloaded artifacts
 clean:
@@ -15,25 +16,31 @@ clean:
 download:
 	mvn package
 
-openam: download
+openam:
 	docker build -t $(REPO)/$@:$(TAG) $@
 
-openidm: download
+openidm:
 	docker build -t $(REPO)/$@:$(TAG) $@
 	docker build -t $(REPO)/openidm-postgres openidm-postgres
 
-opendj: download
+opendj:
 	docker build -t $(REPO)/$@:$(TAG) $@
 
-
-openig: download
+openig:
 	docker build -t $(REPO)/$@:$(TAG) $@
 
-ssoadm: download
+ssoadm:
 	docker build -t $(REPO)/$@:$(TAG) $@
 
-ssoconfig: download
+ssoconfig:
 	docker build -t $(REPO)/$@:$(TAG) $@
+
+resty:
+	docker build -t $(REPO)/$@:$(TAG) $@
+ifdef PUSH
+	docker push $(REPO)/$@:$(TAG)
+endif
+
 
 # Note: Apache agent is not available via maven.
 # todo: get a stable download location
