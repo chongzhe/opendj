@@ -1,6 +1,6 @@
 # Dockerfile ForgeRock OpenIDM
 
-Mount your custom config on /opt/openidm/conf.
+Mount your custom config on /opt/openidm/custom
 
 
 Within the container OpenIDM is running on port 8080
@@ -30,3 +30,5 @@ Find the IP address of your docker image (if you are on a Mac for example,
 
 If OpenIDM runs well before postgres is up, it may error out on trying to
 connect to the repo database. 
+
+# Todo:

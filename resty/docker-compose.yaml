@@ -7,5 +7,7 @@ resty:
     CLIENT_ID: 1067706085367-26ss8u0g011de4tjcm383ntqebcg6fqk.apps.googleusercontent.com
     CLIENT_SECRET: KVqDiJZZ59X60egKs0GCUKTR
   volumes:
-    - ./nginx/conf/nginx.conf:/opt/openresty/nginx/conf/nginx.conf
+    - ./nginx/conf/nginx-oidc-forgerock.conf:/opt/openresty/nginx/conf/nginx.conf
     - ./nginx/html:/opt/openresty/nginx/html
+  extra_hosts:
+    - openam.localtest.me:192.168.1.17

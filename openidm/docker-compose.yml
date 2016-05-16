@@ -14,12 +14,14 @@ openidm-postgres:
 # Shows an example of mounting local Mac config volume for developement
 #
 openidm-nightly:
-  image: forgerock/openidm:nightly
+  #image: forgerock/openidm:nightly
+  build: .
   ports:
    - "5000:8080"
   links:
    - openidm-postgres:postgres
+  # Edit this for your environment. This should point to your custom OpenIDM config
   volumes:
-    - ~/src/k8s/stack-config:/opt/openidm/custom
-  #command: /opt/openidm/startup.sh -p custom/openidm
-  command: /opt/openidm/startup.sh 
+    - ~/src/fretes:/opt/openidm/custom
+  environment:
+    OPENIDM_CUSTOM_CONF: custom/config/openidm
