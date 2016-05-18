@@ -15,16 +15,12 @@ ENV VAR_PREFIX /var/nginx
 # look for $ngx_prefix in https://github.com/openresty/ngx_openresty/blob/master/util/configure
 
 # Options I removed:
-#     --with-ipv6 \
-
+# && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
+# && echo "using upto $NPROC threads" \
 
 RUN cd /root \
- && echo "==> Downloading OpenResty..." \
  && curl -sSL http://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
- && echo "==> Configuring OpenResty..." \
  && cd openresty-* \
- && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
- && echo "using upto $NPROC threads" \
  && ./configure \
     --prefix=$OPENRESTY_PREFIX \
     --http-client-body-temp-path=$VAR_PREFIX/client_body_temp \
@@ -41,12 +37,8 @@ RUN cd /root \
     --without-http_uwsgi_module \
     --without-http_scgi_module \
     --with-ipv6 \
-    -j${NPROC} \
- && echo "==> Building OpenResty..." \
- && make -j${NPROC} \
- && echo "==> Installing OpenResty..." \
+ && make \
  && make install \
- && echo "==> Finishing..." \
  && ln -sf $NGINX_PREFIX/sbin/nginx /usr/local/bin/nginx \
  && ln -sf $NGINX_PREFIX/sbin/nginx /usr/local/bin/openresty \
  && ln -sf $OPENRESTY_PREFIX/bin/resty /usr/local/bin/resty \
@@ -64,7 +56,7 @@ RUN cd /root \
                  --with-lua-include=$OPENRESTY_PREFIX/luajit/include/luajit-2.1 \
  && make install;
 
-# ADD OIDC - not in luarocks
+# ADD OIDC - not in luarocks yet
 ADD "https://raw.githubusercontent.com/pingidentity/lua-resty-openidc/master/lib/resty/openidc.lua" /opt/openresty/lualib/resty/openidc.lua
 
 
@@ -73,14 +65,13 @@ RUN cd /opt/openresty/luajit \
    && ./bin/luarocks install lua-resty-session \
    && ./bin/luarocks install lua-resty-http \
    && ./bin/luarocks install lua-resty-template \
-  && ./bin/luarocks install inspect \
+   && ./bin/luarocks install inspect \
    && chmod +r /opt/openresty/lualib/resty/openidc.lua
 
-
-# ADD nginx/conf/nginx.conf /opt/openresty/nginx/conf/nginx.conf
 
 WORKDIR $NGINX_PREFIX/
 
 
+ADD run.sh /opt/openresty
 
-CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
+CMD ["/opt/openresty/run.sh"]
