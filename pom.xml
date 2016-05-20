@@ -12,9 +12,9 @@
     <packaging>pom</packaging>
 
     <description>
-        Copy ForgeRock SNAPSHOT in-progress software to a staging directory
+        Copy ForgeRock software for creating Docker images.
 
-        Run this using: $mvn install
+        Run this using: $mvn package
     </description>
 
     <properties>
@@ -26,6 +26,7 @@
         <softwareDir>./staging</softwareDir>
 
         <!-- SNAPSHOT software versions. -->
+
         <openamVersion>14.0.0-SNAPSHOT</openamVersion>
         <opendjVersion>4.0.0-SNAPSHOT</opendjVersion>
         <openidmVersion>5.0.0-SNAPSHOT</openidmVersion>
