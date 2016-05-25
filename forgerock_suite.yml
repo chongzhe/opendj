@@ -1,0 +1,26 @@
+# opendj:
+#   image: forgerock/opendj:nightly
+#   ports:
+#    - "389:389"
+#   volumes:
+#    - ./opendj/dirmanager.pw:/var/secrets/dirmanager.pw
+# # uncomment to create a persistent directory
+# #   - /tmp/opendj:/opt/opendj/data
+#   environment:
+#     BOOTSTRAP: /opt/opendj/bootstrap/setup.sh
+
+
+openam:
+  image: forgerock/openam:nightly
+  ports:
+   - "5001:8080"
+  volumes:
+   - ./data/openam:/root/openam
+  command: /tmp/run-openam.sh
+
+
+ssoadm:
+  image: forgerock/ssoadm:nightly
+  volumes:
+   - ./data/openam:/root/openam
+  command: /opt/ssoadm/config.sh
