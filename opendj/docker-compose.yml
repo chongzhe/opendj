@@ -1,10 +1,11 @@
 #Example of how to run OpenDJ with a custom configuration
 # test with docker-compose up --force-recreate
 opendj:
-  image: forgerock/opendj:nightly
+  build: .
   ports:
    - "389:389"
   environment:
+    # Sets bootstrap to the CTS sample
     BOOTSTRAP: /opt/opendj/bootstrap/cts/setup.sh
 # uncomment to create a persistent directory
 #    - /tmp/opendj:/opt/opendj/data
