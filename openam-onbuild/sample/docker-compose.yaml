@@ -1,0 +1,6 @@
+openam:
+  build: .
+  ports:
+     - "8080:8080"
+#  extra_hosts:
+#    - "openam.test.com: 127.0.0.2"
