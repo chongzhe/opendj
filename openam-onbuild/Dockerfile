@@ -30,20 +30,6 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
 
 
 
-#ONBUILD ADD openam.properties /var/tmp/openam.properties
-#
-#ONBUILD RUN /usr/local/tomcat/bin/catalina.sh start  \
-#      && cd /var/tmp/ssoconfig \
-#      && echo "running openam configurator" \
-#      && sleep 20 \
-##      && echo "127.0.0.2 openam.test.com" >> /etc/hosts \
-#      && echo "about to run configurator" \
-#      && java -jar openam-configurator-tool*.jar -f /var/tmp/openam.properties
-
-
-
-
-
 ADD ssoadm /root/admintools
 ADD config.sh /var/tmp
 
@@ -63,7 +49,6 @@ ONBUILD RUN /var/tmp/config.sh
 #     -keypass password
 #
 #ADD server.xml /usr/local/tomcat/conf/server.
-
 
 
 

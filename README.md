@@ -11,10 +11,14 @@ repo at https://stash.forgerock.org/projects/DOCKER/repos/docker/browse
 Any pull requests or issues should be filed on the stash project. You 
 will need a ForgeRock community account to create PRs or issues.
 
+To create a pull request, fork the project to your private stash account, clone it to your workstation,
+commit your changes and push them up to your stash account. You can create a pull request on stash.
+
+
 
 ## About
 
-The provided Makefile downloads nightly builds from ForgeRock's maven repo
+The provided Makefile and build scripts downloads nightly builds from ForgeRock's maven repo
 and will build and tag the docker images
 
 To build
@@ -46,3 +50,9 @@ each directory.
 
 If you are interested in running on a Kubernetes cluster,
 see  [here](https://github.com/ForgeRock/fretes)
+
+
+# How to run these images
+
+Please see the README.md in each directory.  If you want to run OpenAM you probably want to start
+with the openam-onbuild image. 

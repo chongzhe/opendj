@@ -53,12 +53,21 @@ wait_for_openam  $SERVER_URL
 cd /var/tmp/ssoconfig
 java -jar openam-configurator-tool*.jar -f /tmp/am.properties
 
+cd /var/tmp/config
 
-echo "Run ssoadm batch"
+if [ -f ssoadm.txt ]; then
+   echo "Running ssoadm batch commands"
+   /root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z ssoadm.txt
+fi
 
-/root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z /var/tmp/config/ssoadm.txt
+
+if [ -x post-config.sh ]; then
+   echo "Executing post config script"
+   ./post-config.sh
+fi
 
 echo "Stopping tomcat"
+
 
 /usr/local/tomcat/bin/catalina.sh stop
 
