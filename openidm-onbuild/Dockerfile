@@ -25,10 +25,6 @@ WORKDIR /opt/openidm
 
 ONBUILD ADD . /opt/openidm
 
-# Not all child images will have data - so let the child explicity map it
-#ONBUILD ADD data /opt/openidm/data
-
-
 
 CMD ["/opt/openidm/run.sh"]
 
