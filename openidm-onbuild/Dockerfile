@@ -23,8 +23,7 @@ ADD logging.properties /opt/openidm/logging.properties
 
 WORKDIR /opt/openidm
 
-ONBUILD ADD conf /opt/openidm/conf
-ONBUILD ADD script /opt/openidm/script
+ONBUILD ADD . /opt/openidm
 
 # Not all child images will have data - so let the child explicity map it
 #ONBUILD ADD data /opt/openidm/data

@@ -15,7 +15,7 @@ DRYRUN=""
 
 
 # If you add new docker images add them here
-IMAGES="apache-agent openam opendj openidm openidm-postgres openig resty ssoadm ssoconfig openam-onbuild"
+IMAGES="apache-agent openam opendj openidm openidm-postgres openig resty ssoadm ssoconfig openam-onbuild openidm-onbuild"
 
 
 function download {
