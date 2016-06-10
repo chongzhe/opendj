@@ -21,6 +21,10 @@
  * your own identifying information:
  * "Portions Copyrighted [year] [name of copyright owner]"
  */
+ 
+# Note: Sample extracted from OpenIDM release. The provided docker-compose file can build and run this 
+sample 
+
 
 # Sample 1 - One-Way XML -> Internal Repository
 
