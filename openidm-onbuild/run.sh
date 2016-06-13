@@ -12,8 +12,13 @@ JAVA_OPTS=${JAVA_OPTS:--Xmx1024m -Xms1024m}
 
 echo "Starting Openidm with config $CONFIG and java options $JAVA_OPTS"
 
+# Hack to remove orient db repo if there is another repo defined
+if [ -f /opt/openidm/conf/datasource.jdbc-default.json ]; then
+   echo "Removing OrientDB repo config repo.orientdb.json, because you are using another repo datasource"
+   rm /opt/openidm/conf/repo.orientdb.json
+fi
 
-java \
+exec java \
  -Djava.util.logging.config.file=/opt/openidm/logging.properties \
   ${JAVA_OPTS} \
    -Djava.endorsed.dirs= \
