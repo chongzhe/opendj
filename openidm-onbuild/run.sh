@@ -16,6 +16,12 @@ echo "Starting Openidm with config $CONFIG and java options $JAVA_OPTS"
 if [ -f /opt/openidm/conf/datasource.jdbc-default.json ]; then
    echo "Removing OrientDB repo config repo.orientdb.json, because you are using another repo datasource"
    rm /opt/openidm/conf/repo.orientdb.json
+
+   # Another hack for https://bugster.forgerock.org/jira/browse/OPENIDM-5468
+   # If we are using a non OrientDB there is a good chance that K8S might
+   # start up OpenIDM before the DB. We should sleep a bit.
+   echo "Sleeping a bit to ensure the repo DB is up"
+   sleep 20
 fi
 
 exec java \

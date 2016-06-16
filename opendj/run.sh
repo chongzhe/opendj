@@ -23,6 +23,15 @@ if [ ! -d ./data/config ] ; then
 
 fi
 
+# Check if keystores are mounted as a volume, and if so overwrite
+# override the generated keystores
+SECRET_VOLUME=${SECRET_VOLUME:-/var/secrets/opendj}
+
+if [ -d ${SECRET_VOLUME} ]; then
+  echo "Secret volume is present. Will copy keystores and truststore"
+  cp -f ${SECRET_VOLUME}/*  ./data/config
+fi
+
 # todo: Check /opt/opendj/data/config/buildinfo
 # Run upgrade if the server is older
 
@@ -30,4 +39,4 @@ fi
 echo "Starting OpenDJ"
 
 # todo: Test to see if it is already running
-./bin/start-ds --nodetach
+exec ./bin/start-ds --nodetach

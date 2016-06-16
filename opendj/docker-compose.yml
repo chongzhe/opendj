@@ -5,7 +5,11 @@ opendj:
   ports:
    - "389:389"
   environment:
-    # Sets bootstrap to the CTS sample
-    BOOTSTRAP: /opt/opendj/bootstrap/cts/setup.sh
+    # Uncomment this to bootstrap to the CTS sample
+    #BOOTSTRAP: /opt/opendj/bootstrap/cts/setup.sh
+    SOMEVAR: "keep compose happy"
+  volumes:
 # uncomment to create a persistent directory
 #    - /tmp/opendj:/opt/opendj/data
+  # This mounts a secret volume for the password and for key/trust stores
+    - ./secrets:/var/secrets/opendj
