@@ -18,8 +18,19 @@ if [ ! -d ./data/config ] ; then
 
   BOOTSTRAP=${BOOTSTRAP:-/opt/opendj/bootstrap/setup.sh}
 
-  echo "Running $BOOTSTRAP"
-  $BOOTSTRAP
+
+  # Check for executable bit - this is to get around an issue
+  # Where k8s might mount a setup script as a config map, and not set the execute bit
+  if [ ! -x "${BOOTSTRAP}" ]; then
+   echo "Changing bootstrap permissions"
+   chmod +x "${BOOTSTRAP}"
+  fi
+
+   chmod +x "${BOOTSTRAP}"
+   ls -l "${BOOTSTRAP}"
+
+   echo "Running $BOOTSTRAP"
+   sh "${BOOTSTRAP}"
 
 fi
 
@@ -28,8 +39,8 @@ fi
 SECRET_VOLUME=${SECRET_VOLUME:-/var/secrets/opendj}
 
 if [ -d ${SECRET_VOLUME} ]; then
-  echo "Secret volume is present. Will copy keystores and truststore"
-  cp -f ${SECRET_VOLUME}/*  ./data/config
+  echo "Secret volume is present. Will copy any keystores and truststore"
+  cp -f -v ${SECRET_VOLUME}/*  ./data/config
 fi
 
 # todo: Check /opt/opendj/data/config/buildinfo
@@ -38,5 +49,5 @@ fi
 
 echo "Starting OpenDJ"
 
-# todo: Test to see if it is already running
+#
 exec ./bin/start-ds --nodetach
