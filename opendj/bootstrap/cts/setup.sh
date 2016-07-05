@@ -20,7 +20,11 @@ mkdir $T
 
 #LDIF_DIR=/usr/local/tomcat/webapps/openam/WEB-INF/template/ldif/sfha
 LDIF_DIR=/opt/opendj/bootstrap/cts/sfha
-PASS=`cat $DIR_MANAGER_PW_FILE`
+
+PW=`cat $DIR_MANAGER_PW_FILE`
+PASS=${PW:-password}
+
+# PASS=`cat $DIR_MANAGER_PW_FILE`
 USER="cn=Directory Manager"
 PORT=4444
 CTS_DN="dc=cts,dc=forgerock,dc=com"
@@ -138,7 +142,7 @@ echo ""
 echo "...Adding Admin Global ACIs..."
 echo ""
 bin/dsconfig set-access-control-handler-prop \
---add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn = "ldap:///uid=openam,ou=admins,dc=cts,dc=example,dc=com";)' \
+--add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn = "ldap:///uid=openam,ou=admins,$CTS_DN";)' \
 --port $PORT \
 --bindDN "$USER" \
 --bindPassword $PASS \

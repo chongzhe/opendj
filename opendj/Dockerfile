@@ -4,8 +4,6 @@ MAINTAINER warren.strange@forgerock.com
 
 WORKDIR /opt
 
-ADD opendj.zip /var/tmp/opendj.zip
-RUN unzip /var/tmp/opendj.zip -d /opt/ && rm -fr /var/tmp/opendj.zip
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 
 
@@ -15,6 +13,13 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 # This is the path to the password file
 # If no volume is mounted, a default password is set
 ENV DIR_MANAGER_PW_FILE /var/secrets/opendj/dirmanager.pw
+
+ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/opendj
+ENV OPENDJ_VERSION=4.0.0-SNAPSHOT
+RUN curl $MVN_REPO/opendj-server-legacy/$OPENDJ_VERSION/opendj-server-legacy-$OPENDJ_VERSION.zip \
+       -o /tmp/opendj.zip \
+   && unzip /tmp/opendj.zip -d /opt \
+   && rm /tmp/*zip
 
 WORKDIR /opt/opendj
 
@@ -31,6 +36,8 @@ RUN echo "/opt/opendj/data" > /opt/opendj/instance.loc  && \
 ADD Dockerfile /
 
 ADD bootstrap/ /opt/opendj/bootstrap/
+
+
 
 EXPOSE 389 636 4444 8989
 
