@@ -4,6 +4,7 @@
 # Options
 # -d download: runs mvn package to get latest software bits
 # -p push the image to the registry
+# Note: On a Mac you need to replace the ancient bash with a more up to date one using homebrew
 
 # ENV vars for the registry / repo and tags
 REPO=${REPO:-forgerock}

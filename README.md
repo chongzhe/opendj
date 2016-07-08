@@ -18,6 +18,13 @@ commit your changes and push them up to your stash account. You can create a pul
 
 ## About
 
+This is very much a work in progress. You will need to modify the Dockerfiles here to suit
+your needs. 
+
+Some of the Docker images dynamically pull the ForgeRock assets from maven, and some
+expect that the war or zip is already downloaded to the directory containing the Dockerfile.
+
+
 The provided Makefile and build scripts downloads nightly builds from ForgeRock's maven repo
 and will build and tag the docker images
 
@@ -44,9 +51,7 @@ backstage.forgerock.com and download the appropriate binary. The binary should b
 placed in the Docker build directory (e.g. openam/) and should not have any
 version info (openam.war, not OpenAM-13.0.1.war).
 
-
-For instructions on how to run these images please see the README.md files in
-each directory.
+Note that some images directly pull from maven -so you may need to modify the Dockerfile
 
 If you are interested in running on a Kubernetes cluster,
 see  [here](https://github.com/ForgeRock/fretes)

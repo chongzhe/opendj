@@ -16,6 +16,7 @@ ENV DIR_MANAGER_PW_FILE /var/secrets/opendj/dirmanager.pw
 
 ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/opendj
 ENV OPENDJ_VERSION=4.0.0-SNAPSHOT
+
 RUN curl $MVN_REPO/opendj-server-legacy/$OPENDJ_VERSION/opendj-server-legacy-$OPENDJ_VERSION.zip \
        -o /tmp/opendj.zip \
    && unzip /tmp/opendj.zip -d /opt \
