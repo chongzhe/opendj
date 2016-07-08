@@ -1,19 +1,16 @@
 #Example of how to run two OpenDJ instances replicated
 # docker-compose -f replica.yml build
-# test with docker-compose -f dj-replica.yml up - -force-recreate --build
+# test with docker-compose -f dj-replica.yml up
 version: '2'
 services:
   opendj1:
     #image: forgerock/opendj:nightly
     build: .
     ports:
-      - "389:389"
+      - "2389:389"
     networks:
       - my-net
-    environment:
-      DJ_HOSTNAME: opendj1
-      DJ_REPLICA_HOST: opendj2
-      BOOTSTRAP: /opt/opendj/bootstrap/replica/setup.sh
+    hostname: opendj1
   opendj2:
     #image: forgerock/opendj:nightly
     build: .
@@ -22,8 +19,8 @@ services:
     networks:
        - my-net
     environment:
-      DJ_HOSTNAME: opendj2
-      BOOTSTRAP: /opt/opendj/bootstrap/replica/setup.sh
+      DJ_MASTER_SERVER: opendj1
+    hostname: opendj2
 networks:
   my-net:
     driver: bridge

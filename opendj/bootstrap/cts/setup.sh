@@ -21,8 +21,7 @@ mkdir $T
 #LDIF_DIR=/usr/local/tomcat/webapps/openam/WEB-INF/template/ldif/sfha
 LDIF_DIR=/opt/opendj/bootstrap/cts/sfha
 
-PW=`cat $DIR_MANAGER_PW_FILE`
-PASS=${PW:-password}
+PASS=${PASSWORD:-password}
 
 # PASS=`cat $DIR_MANAGER_PW_FILE`
 USER="cn=Directory Manager"
