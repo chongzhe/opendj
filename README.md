@@ -11,7 +11,7 @@ repo at https://stash.forgerock.org/projects/DOCKER/repos/docker/browse
 Any pull requests or issues should be filed on the stash project. You 
 will need a ForgeRock community account to create PRs or issues.
 
-To create a pull request, fork the project to your private stash account, clone it to your workstation,
+To create a pull request, fork the project to your private community stash account, clone it to your workstation,
 commit your changes and push them up to your stash account. You can create a pull request on stash.
 
 
@@ -19,7 +19,8 @@ commit your changes and push them up to your stash account. You can create a pul
 ## About
 
 This is very much a work in progress. You will need to modify the Dockerfiles here to suit
-your needs. 
+your needs. The Dockerfiles are changing quite often as we find better ways to build these images
+for a wide range of requirements. 
 
 Some of the Docker images dynamically pull the ForgeRock assets from maven, and some
 expect that the war or zip is already downloaded to the directory containing the Dockerfile.
@@ -34,6 +35,12 @@ To build
 make clean
 make
 ```
+
+# Getting Started Example using OpenAM
+
+The openam-onbuild contains a Docker image is a good place to start. There is sample/ directory 
+in that image that will build and configure a child image. Please see the README
+
 
 
 # Building Docker Images using Jenkins
