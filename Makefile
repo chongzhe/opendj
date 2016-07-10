@@ -1,8 +1,10 @@
-# If you edit this with an IDE beware of converting tabs to spaces (Make wants tabs)
-.PHONY: clean download
+# Note: Use the build.sh shell script to build docker images
+
+.PHONY: clean download all
+
 
 all:
-	./build.sh -d -p foo
+	./build.sh -d
 
 # Clean up any downloaded artifacts
 clean:
