@@ -18,6 +18,7 @@ if [ ! -d ./data/config ] ; then
   BOOTSTRAP=${BOOTSTRAP:-/opt/opendj/bootstrap/setup.sh}
 
   export BASE_DN=${BASE_DN:-"dc=example,dc=com"}
+  echo "BASE DN is ${BASE_DN}"
   PW=`cat $DIR_MANAGER_PW_FILE`
   export PASSWORD=${PW:-password}
 
@@ -30,10 +31,6 @@ if [ ! -d ./data/config ] ; then
    if [ ! -z ${DJ_MASTER_SERVER+x} ];  then
       /opt/opendj/bootstrap/replicate.sh $DJ_MASTER_SERVER
    fi
-
-   # Stop the directory -so it can be started in foregeround mode
-   /opt/opendj/bin/stop-ds
-
 fi
 
 # Check if keystores are mounted as a volume, and if so
@@ -42,14 +39,22 @@ SECRET_VOLUME=${SECRET_VOLUME:-/var/secrets/opendj}
 
 if [ -d ${SECRET_VOLUME} ]; then
   echo "Secret volume is present. Will copy any keystores and truststore"
-  cp -f -v ${SECRET_VOLUME}/*  ./data/config
+  cp -f -v ${SECRET_VOLUME}/key*   ${SECRET_VOLUME}/trust* ./data/config
 fi
 
 # todo: Check /opt/opendj/data/config/buildinfo
 # Run upgrade if the server is older
 
 
+if (bin/status -n | grep Started) ; then
+   echo "OpenDJ is started"
+   # We cant exit because we are pid 1
+   while true; do sleep 100000; done
+fi
+
+
 echo "Starting OpenDJ"
 
 #
+
 exec ./bin/start-ds --nodetach

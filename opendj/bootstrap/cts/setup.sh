@@ -23,7 +23,10 @@ LDIF_DIR=/opt/opendj/bootstrap/cts/sfha
 
 PASS=${PASSWORD:-password}
 
-# PASS=`cat $DIR_MANAGER_PW_FILE`
+# Comment this out when everything works...
+echo "CTS password is $PASSWORD"
+
+
 USER="cn=Directory Manager"
 PORT=4444
 CTS_DN="dc=cts,dc=forgerock,dc=com"
@@ -141,7 +144,7 @@ echo ""
 echo "...Adding Admin Global ACIs..."
 echo ""
 bin/dsconfig set-access-control-handler-prop \
---add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn = "ldap:///uid=openam,ou=admins,$CTS_DN";)' \
+--add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) userdn = "ldap:///uid=openam,ou=admins,'${CTS_DN}'";)' \
 --port $PORT \
 --bindDN "$USER" \
 --bindPassword $PASS \
@@ -200,7 +203,3 @@ echo "Setting custom java properties"
 cp bootstrap/cts/java.properties /opt/opendj/data/config
 bin/dsjavaproperties
 
-
-echo "Stopping OpenDJ"
-# Stop DS - since the boot script will attempt to start it in the forgerground
-bin/stop-ds
