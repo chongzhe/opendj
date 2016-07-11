@@ -6,10 +6,19 @@ MASTER=$1
 echo "Setting up replication from $HOSTNAME to $MASTER"
 
 
-if [ ${HOSTNAME} == ${MASTER} ]; then
+# For debug
+
+
+# K8s puts the service name in /etc/hosts
+if grep ${MASTER} /etc/hosts; then
  echo "We are the master. Skipping replication setup to ourself"
  exit 0
 fi
+
+# Comment out
+echo "replicate ENV vars:"
+env
+
 
 
 echo "enabling replication"
@@ -18,7 +27,8 @@ echo "enabling replication"
 # This is hacky....
 echo "Will sleep for a bit to ensure master is up"
 
-sleep 15
+sleep 30
+
 
 bin/dsreplication enable --host1 $HOSTNAME --port1 4444 \
   --bindDN1 "cn=directory manager" \

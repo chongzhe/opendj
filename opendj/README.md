@@ -40,7 +40,7 @@ first created
 directory is empty. Defaults to /opt/opendj/boostrap/setup.sh
 * SECRET_VOLUME:  Path to a directory containing keystores. Defaults to /var/secrets/opendj. This is used
 to setup OpenDJ with known keystore values.
-* BASE_DN: The base DN to create. Used only in setup phase right now
+* BASE_DN: The base DN to create. Used in setup and replication
 * DJ_MASTER_SERVER: If set, run.sh will call bootstrap/replicate.sh to enable replication to 
 this master. This only happens if the data/config directory does not exist
 
