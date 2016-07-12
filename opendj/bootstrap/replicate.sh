@@ -3,7 +3,15 @@
 # If that server is ourself this is a no-op
 
 MASTER=$1
-echo "Setting up replication from $HOSTNAME to $MASTER"
+
+
+# This is a bit  kludgy.
+# The hostname has to be a fully resolvable DNS name in the cluster
+# If the service is called
+
+MYHOSTNAME=`hostname -f`
+
+echo "Setting up replication from $MYHOSTNAME to $MASTER"
 
 
 # For debug
@@ -30,7 +38,7 @@ echo "Will sleep for a bit to ensure master is up"
 sleep 30
 
 
-bin/dsreplication enable --host1 $HOSTNAME --port1 4444 \
+bin/dsreplication enable --host1 $MYHOSTNAME --port1 4444 \
   --bindDN1 "cn=directory manager" \
   --bindPassword1 $PASSWORD --replicationPort1 8989 \
   --host2 $MASTER --port2 4444 --bindDN2 "cn=directory manager" \
@@ -41,6 +49,6 @@ echo "initializing replication"
 
 bin/dsreplication initialize --baseDN $BASE_DN \
   --adminUID admin --adminPassword $PASSWORD \
-  --hostSource $HOSTNAME --portSource 4444 \
+  --hostSource $MYHOSTNAME --portSource 4444 \
   --hostDestination $MASTER --portDestination 4444 -X -n
 
