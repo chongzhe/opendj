@@ -46,7 +46,7 @@ docker-compose up
 ```
 
 
-Open  http://openam.test.com:8080/openam in your browser. Log on with amadmin/password
+Open  http://openam.test.com:9080/openam in your browser. Log on with amadmin/password
 
 
 
