@@ -14,7 +14,7 @@ ADD Dockerfile /
 
 ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
 
-ENV OPENAM_VERSION=13.5.0-SNAPSHOT
+ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
 
 RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
@@ -30,7 +30,7 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
 
 
 
-ADD ssoadm /root/admintools
+ADD ssoadm /root/admintools/
 ADD config.sh /var/tmp
 
 
