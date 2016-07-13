@@ -31,7 +31,7 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
 
 
 ADD ssoadm /root/admintools/
-ADD config.sh /var/tmp
+ADD config.sh /var/tmp/
 
 
 ONBUILD ADD config /var/tmp/config
