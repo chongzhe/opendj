@@ -12,8 +12,9 @@ ADD Dockerfile /
 
 #ADD openam.war  /usr/local/tomcat/webapps/openam.war
 
-ENV MVNENV OPENAM_VERSION=14.0.0-SNAPSHOT
+ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
 
+ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
 RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
      -o /tmp/openam.war \
@@ -25,9 +26,6 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
     -o /tmp/ssoadmin.zip \
  &&  unzip /tmp/ssoadmin.zip -d /root/admintools \
  && rm /tmp/*zip /tmp/*war
-_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
-
-
 
 ADD ssoadm /root/admintools/
 ADD config.sh /var/tmp/
