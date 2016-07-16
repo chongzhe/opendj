@@ -22,6 +22,11 @@ RUN curl $MVN_REPO/opendj-server-legacy/$OPENDJ_VERSION/opendj-server-legacy-$OP
    && unzip /tmp/opendj.zip -d /opt \
    && rm /tmp/*zip
 
+# When testing the build it is faster to use local files
+#ADD opendj.zip /tmp/
+#RUN unzip /tmp/opendj.zip -d /opt
+
+
 WORKDIR /opt/opendj
 
 # Creating instance.loc consolidates the writable directories under one root

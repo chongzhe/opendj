@@ -5,6 +5,8 @@ cd /var/tmp
 
 source config/env.sh
 
+echo "Home dir is $HOME"
+
 
 echo $ADMIN_PWD >/root/.amadminpw
 chmod  0400 /root/.amadminpw

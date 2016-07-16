@@ -12,21 +12,20 @@ ADD Dockerfile /
 
 #ADD openam.war  /usr/local/tomcat/webapps/openam.war
 
-ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
-
-ENV OPENAM_VERSION=14.0.0-SNAPSHOT
+ENV MVNENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
 
 RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
-       -o /tmp/openam.war \
-   && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
-   && curl $MVN_REPO/openam-distribution-ssoconfiguratortools/$OPENAM_VERSION/openam-distribution-ssoconfiguratortools-$OPENAM_VERSION.zip \
-         -o /tmp/ssoconfig.zip \
-   && unzip /tmp/ssoconfig.zip -d /var/tmp/ssoconfig \
-   && curl $MVN_REPO/openam-distribution-ssoadmintools/$OPENAM_VERSION/openam-distribution-ssoadmintools-$OPENAM_VERSION.zip \
-      -o /tmp/ssoadmin.zip \
-   &&  unzip /tmp/ssoadmin.zip -d /root/admintools \
-   && rm /tmp/*zip /tmp/*war
+     -o /tmp/openam.war \
+ && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
+ && curl $MVN_REPO/openam-distribution-ssoconfiguratortools/$OPENAM_VERSION/openam-distribution-ssoconfiguratortools-$OPENAM_VERSION.zip \
+       -o /tmp/ssoconfig.zip \
+ && unzip /tmp/ssoconfig.zip -d /var/tmp/ssoconfig \
+ && curl $MVN_REPO/openam-distribution-ssoadmintools/$OPENAM_VERSION/openam-distribution-ssoadmintools-$OPENAM_VERSION.zip \
+    -o /tmp/ssoadmin.zip \
+ &&  unzip /tmp/ssoadmin.zip -d /root/admintools \
+ && rm /tmp/*zip /tmp/*war
+_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
 
 
 

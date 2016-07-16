@@ -1,6 +1,0 @@
-# Sample to run this with a custom nginx.conf file that protects / with OIDC
-openam:
-  build: .
-  ports:
-     - "1080:8080"
-     - "1443:8443"
