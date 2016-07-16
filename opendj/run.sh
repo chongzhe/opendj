@@ -37,9 +37,10 @@ fi
 # Copy any keystores over
 SECRET_VOLUME=${SECRET_VOLUME:-/var/secrets/opendj}
 
-if [ -d ${SECRET_VOLUME} ]; then
+if [ -d "${SECRET_VOLUME}" ]; then
   echo "Secret volume is present. Will copy any keystores and truststore"
-  cp -f ${SECRET_VOLUME}/key*   ${SECRET_VOLUME}/trust* ./data/config
+  # We send errors to /dev/null in case no data exists.
+  cp -f ${SECRET_VOLUME}/key*   ${SECRET_VOLUME}/trust* ./data/config 2>/dev/null
 fi
 
 # todo: Check /opt/opendj/data/config/buildinfo
