@@ -18,10 +18,11 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
  && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
  && curl $MVN_REPO/openam-distribution-ssoconfiguratortools/$OPENAM_VERSION/openam-distribution-ssoconfiguratortools-$OPENAM_VERSION.zip \
        -o /tmp/ssoconfig.zip \
+ && unzip /tmp/ssoconfig.zip -d /var/tmp/ssoconfig \
  && rm /tmp/*zip /tmp/*war
 
 
-# For testing use local files - much faster
+# For testing Docker builds use local files - much faster
 #ADD openam.war  /usr/local/tomcat/webapps/openam.war
 #ADD ssoconfigtools.zip /tmp/
 #RUN unzip /tmp/ssoconfigtools -d /var/tmp/ssoconfig
