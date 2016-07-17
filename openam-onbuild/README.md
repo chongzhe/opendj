@@ -2,8 +2,9 @@
 
 This image uses Docker "ONBUILD" directives to run configuration commands in a child image.
 
-This image will *not* run standalone. You must create a child image (inherit FROM) and supply the required config/ scripts to 
-customize the child image. 
+*** NOTE ****:  As configured, the image is *not* run designed to run standalone. 
+You must create a child image (inherit FROM) and supply the required config/ scripts to 
+customize the child image. The e
 
 The child image will be configured using ssoconfig, ssoadm and other scripts. At completion of the child image build, 
 the OpenAM instance should be fully configured and ready to run.

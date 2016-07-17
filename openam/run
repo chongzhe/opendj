@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-
+# Run OpenAM - optionally configuring the image.
+# Please see the comments inline to understand how this works
 cd /var/tmp
 
-# The first thing we check is if we need to be configured or not. IF there
-# is an existing bootstrap, we just start openam, no need to configure
-# You might mount a volume on /root/openam to get persistence
 
-
+# Function to check for secrets (password, keystores) and copy them into the openam root dir
 function copy_secrets {
    if [ -d /var/secrets/openam ]; then
       echo "secret volume mounted - will copy any keystores"
@@ -14,6 +12,13 @@ function copy_secrets {
    fi
 
 }
+
+
+
+# The first thing we check is if we need to be configured or not. If there
+# is an existing bootstrap, we just start openam, no need to configure
+# You might mount a volume on /root/openam to get persistence across container restarts
+
 if [ -f /root/openam/bootstrap ]; then
    echo "Bootstrap found. Booting OpenAM"
 
@@ -25,6 +30,7 @@ if [ -f /root/openam/bootstrap ]; then
    exit 0
 fi
 
+# No bootstrap - so we need to be configured
 # Check to see if the user (child docker image or a mounted volume) has supplied configuration. If not
 # just default to bringing up OpenAM ready to be configured.
 
@@ -43,19 +49,28 @@ fi
 #cat /etc/hosts
 #ping -c 5 opendj
 
+# After this point, we have a set of config files mounted on /var/tmp/config - so we configure the image
 
 # Source user provided env vars from child image
 source config/env.sh
 
-# If there is a secret volume mounted we use that for the password instead of default
+# If there is a secret volume mounted we use that for the amadmin password instead of default in env.sh
+ADMIN_PW_FILE="${ADMIN_PW_FILE:-/var/secrets/openam/admin.pw}"
 
-# Optional path to cn=directory manager password. Used to connect to the config store
-DIR_MANAGER_PW_FILE=${DIR_MANGER_PW_FILE:-/var/secrets/openam/dirmanager.pw}
+
+if [ -f "${ADMIN_PW_FILE}" ]; then
+   echo "Using amadmin password from secret file $ADMIN_PW_FILE"
+    ADMIN_PWD=`cat ${ADMIN_PW_FILE}`
+fi
+
+
+# Password for the config store. Used if we are using an external config store
+DIR_MANAGER_PW_FILE="${DIR_MANAGER_PW_FILE:-/var/secrets/opendj/dirmanager.pw}"
 
 
 if [ -f "${DIR_MANAGER_PW_FILE}" ]; then
-   echo "Bootstrapping with config store password from secret file $DIR_MANAGER_PW_FILE"
-   ADMIN_PWD=`cat ${DIR_MANAGER_PW_FILE}`
+   echo "Using OpenDJ password from secret file $DIR_MANAGER_PW_FILE"
+   DIR_MANAGER_PWD=`cat ${DIR_MANAGER_PW_FILE}`
 fi
 
 
@@ -73,11 +88,10 @@ function wait_for_openam
 	# Sleep an additonal time in case DJ is not quite up yet
 	sleep 15
    echo "About to begin configuration"
-
 }
 
 
-# Expand any env vars in env.sh
+# Function to do var expansion the openam.properties template file based on exported variables
 function do_template
 {
 	cat config/openam.properties | while read -r line; do
@@ -94,15 +108,22 @@ function do_template
 }
 
 
+# Start tomcat - but in the background so we can complete configuration
 echo "Starting tomcat"
 /usr/local/tomcat/bin/catalina.sh start
 
 # template out env.sh vars
 do_template
+
 # OpenAM needs its fqdn in /etc/hosts
+# Using 127.0.0.2 is a trick that works the samee as localhost
 echo "127.0.0.2  $FQDN_HOSTNAME" >> /etc/hosts
 wait_for_openam  $SERVER_URL
+
+
 cd /var/tmp/ssoconfig
+
+# Now run the configurator
 java -jar openam-configurator-tool*.jar -f /tmp/am.properties
 
 
@@ -114,12 +135,13 @@ java -jar openam-configurator-tool*.jar -f /tmp/am.properties
 
 cd /var/tmp/config
 
+# Copy any secrets, keystores, etc.
 copy_secrets
 
 
 # For this image we dont yet do any configuration beyond the basic sso configurator
 # Additional config can be done by another container or a k8s job
-# When AM 14 REST config lands we will revist this
+# When AM 14 REST config lands we will revisit this
 #
 #if [ -f ssoadm.txt ]; then
 #   echo "Running ssoadm batch commands"

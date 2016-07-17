@@ -4,12 +4,18 @@ FROM httpd:2.4
 WORKDIR /opt
 
 
-ADD agent.zip /var/tmp/agent.zip
+#ADD agent.zip /var/tmp/agent.zip
+
+
 
 RUN apt-get update && apt-get install --no-install-recommends  -y unzip curl && \
+     curl "http://download.forgerock.org/downloads/openam/webagents/nightly/Linux/Apache_v24_Linux_64bit_4.0.0-SNAPSHOT.zip" \
+               -o /var/tmp/agent.zip && \
       unzip /var/tmp/agent.zip && rm /var/tmp/agent.zip && \
       echo "password" >/var/tmp/pw.txt  && chmod 0400 /var/tmp/pw.txt && \
+
       rm -rf /var/lib/apt/lists/*
+
 
 # Format of agentadmin command:
 # agentadmin --s "web-server configuration file, directory or site parameter" \
