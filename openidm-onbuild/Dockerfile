@@ -6,7 +6,7 @@ EXPOSE 8080
 
 ADD Dockerfile /
 
-ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openidm
+ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openidm
 
 ENV OPENIDM_VERSION=5.0.0-SNAPSHOT
 
