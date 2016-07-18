@@ -9,7 +9,7 @@ WORKDIR $CATALINA_HOME
 
 EXPOSE 8080 8443
 
-ENV MVN_REPO=http://maven.forgerock.org/repo/repo/org/forgerock/openam
+ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openam
 ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
 
