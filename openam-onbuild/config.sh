@@ -68,6 +68,11 @@ if [ -x post-config.sh ]; then
    ./post-config.sh
 fi
 
+if [ -f moressoadm.txt ]; then
+   echo "Running additional ssoadm batch commands"
+   /root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z moressoadm.txt
+fi
+
 echo "Stopping tomcat"
 
 
