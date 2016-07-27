@@ -7,6 +7,8 @@ ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 WORKDIR $CATALINA_HOME
 
+
+# Note: By default tomcat does NOT listen on 8443. You must add a custom server.xml file to change this
 EXPOSE 8080 8443
 
 ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openam
@@ -44,6 +46,7 @@ ADD run /var/tmp/
 # Use this if OpenAM is behind SSL termination and you want port 8080 to be configured as secure
 # See the server.xml file
 #ADD server.xml /usr/local/tomcat/conf/server.xml
+
 
 
 
