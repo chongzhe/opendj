@@ -4,3 +4,4 @@
 staging/
 tmp/
 docker.iml
+logs/
