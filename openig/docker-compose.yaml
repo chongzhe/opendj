@@ -21,4 +21,4 @@ openig:
   # If you attempt to use a relative mount (not /Users/xxx, but xxx),
   # The volume is relative to the boot2docker VM machine, not your mac
   volumes:
-    - ./sample-config:/root/openig
+    - ./sample-config:/var/openig
