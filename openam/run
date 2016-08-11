@@ -17,7 +17,7 @@ function copy_secrets {
 
 # The first thing we check is if we need to be configured or not. If there
 # is an existing bootstrap, we just start openam, no need to configure
-# You might mount a volume on /root/openam to get persistence across container restarts
+# You can mount a volume on /root/openam to get persistence across container restarts
 
 if [ -f /root/openam/bootstrap ]; then
    echo "Bootstrap found. Booting OpenAM"
@@ -156,10 +156,11 @@ copy_secrets
 
 echo "Configuration done"
 
-# This is a bit of hack
+#
 # We cant exit because that will kill the container...
 while true; do
-   sleep 1000
+   tail -f /usr/local/tomcat/logs/catalina.out
+   sleep 100
 done
 
 echo "done"
