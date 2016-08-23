@@ -1,0 +1,4 @@
+openam:
+  build: .
+  ports:
+     - "9080:8080"

@@ -23,7 +23,7 @@ if [ -f /root/openam/bootstrap ]; then
    echo "Bootstrap found. Booting OpenAM"
 
    copy_secrets
-   /usr/local/tomcat/bin/catalina.sh run
+   exec /usr/local/tomcat/bin/catalina.sh run
 
    # This should not be reached
    echo "Tomcat stopped"
