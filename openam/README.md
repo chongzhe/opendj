@@ -27,7 +27,7 @@ would be used if you are using an external OpenDJ config store
 * /var/secrets/openam/{key*, .keypass, .storepass}  - optional key
 material copied into the /root/openam/openam directory. If you
 want all OpenAM instances to have the same keystores you
-could mount a Kubernetes secret volume with these files.
+can mount a Kubernetes secret volume with these files.
 
 See the sample directory for an example of how this works
  

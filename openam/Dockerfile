@@ -1,7 +1,7 @@
 #
 FROM tomcat:8-jre8
 
-MAINTAINER warren.strange@gmail.com
+MAINTAINER warren.strange@forgerock.com
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
@@ -14,7 +14,7 @@ EXPOSE 8080 8443
 ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openam
 ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
-
+# Use this to download an OpenAM build from Maven
 RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
      -o /tmp/openam.war \
  && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
@@ -24,14 +24,14 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
  && rm /tmp/*zip /tmp/*war
 
 
-# For testing Docker builds use local files - much faster
+# For testing Docker builds use local files instead - much faster
 #ADD openam.war  /usr/local/tomcat/webapps/openam.war
 #ADD ssoconfigtools.zip /tmp/
 #RUN unzip /tmp/ssoconfigtools -d /var/tmp/ssoconfig
 
 ADD run /var/tmp/
 
-# Generate a default keystore for SSL.
+# Generate a default keystore for SSL - only needed if you want SSL inside the cluster
 # You can mount your own keystore on the ssl/ directory to override this
 #RUN mkdir -p /usr/local/tomcat/ssl && \
 #   keytool -genkey -noprompt \
