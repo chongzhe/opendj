@@ -1,0 +1,13 @@
+# Sample to run opendj config store plus an OpenAM instance
+version: '2'
+services:
+  openam:
+    # If creating a child image use this
+    #build: .
+    # If using the base image use this and mount a directory on /var/tmp/config
+    image: forgerock/openam:latest
+    ports:
+     - "8080:8080"
+    hostname: openam
+    volumes:
+      - /dev/urandom:/dev/random

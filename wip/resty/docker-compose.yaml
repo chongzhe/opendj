@@ -1,0 +1,12 @@
+# Sample to run this with a custom nginx.conf file that protects / with OIDC
+resty:
+  build: .
+  ports:
+     - "80:80"
+  environment:
+    CLIENT_ID: 1067706085367-26ss8u0g011de4tjcm383ntqebcg6fqk.apps.googleusercontent.com
+    CLIENT_SECRET: 1000000000notsecret
+    CUSTOM_CONF_DIR: "/var/tmp/openresty"
+  volumes:
+    - ./config:/var/tmp/openresty
+

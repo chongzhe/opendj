@@ -1,0 +1,24 @@
+# Sample to run OpenAM with embedded config store
+version: '2'
+services:
+  openam:
+    # If creating a child image use this
+    #build: .
+    # If using the base image use this and mount a directory on /var/tmp/config
+    image: forgerock/openam:latest
+    ports:
+     - "8080:8080"
+    networks:
+       - my-net
+    hostname: openam
+    # Mount config volume for OpenAM configuration
+    # Mount secret volume for passwords. keystores, etc. Need DJ password too!
+    volumes:
+      - ./am-secrets:/var/secrets/openam
+      - ./dj-secrets:/var/secrets/opendj
+      - ./config-embedded:/var/tmp/config
+# Create a network so DJ and AM are on the same network
+networks:
+  my-net:
+    driver: bridge
+

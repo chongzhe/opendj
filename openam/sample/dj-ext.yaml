@@ -1,0 +1,43 @@
+# Sample to run opendj config store plus an OpenAM instance
+version: '2'
+services:
+  # OpenDJ used as external config store
+  opendj:
+    image: forgerock/opendj:latest
+    ports:
+      - "389:389"
+      - "4444:4444"
+    networks:
+      - my-net
+    hostname: opendj
+    environment:
+      # If the directory needs to be initialized this creates the base DN
+      BASE_DN: dc=openam,dc=forgerock,dc=org
+    volumes:
+    # uncomment to create a persistent directory
+    #    - /tmp/opendj:/opt/opendj/data
+    # This mounts a secret volume for the dir manager password and for DJ key/trust stores
+      - ./dj-secrets:/var/secrets/opendj
+  openam:
+    # If creating a child image use this
+    #build: .
+    # If using the base image use this and mount a directory on /var/tmp/config
+    image: forgerock/openam:latest
+    ports:
+     - "8080:8080"
+    networks:
+       - my-net
+    hostname: openam
+    environment:
+      # If the directory needs to be initialized this creates the base DN
+      DIR_MANAGER_PW_FILE: /var/secrets/opendj/dirmanager.pw
+    # Mount config volume for OpenAM configuration
+    # Mount secret volume for passwords. keystores, etc. Need DJ password too!
+    volumes:
+      - ./am-secrets:/var/secrets/openam
+      - ./dj-secrets:/var/secrets/opendj
+      - ./config-ext:/var/tmp/config
+# Create a network so DJ and AM are on the same network
+networks:
+  my-net:
+    driver: bridge
