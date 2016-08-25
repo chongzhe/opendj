@@ -22,7 +22,7 @@ if [ ! -d ./data/config ] ; then
   PW=`cat $DIR_MANAGER_PW_FILE`
   export PASSWORD=${PW:-password}
 
-   echo "Password set to $PASSWORD"
+  #echo "Password set to $PASSWORD"
 
    echo "Running $BOOTSTRAP"
    sh "${BOOTSTRAP}"

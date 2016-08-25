@@ -17,6 +17,7 @@ ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 # Use this to download an OpenAM build from Maven
 RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
      -o /tmp/openam.war \
+ && rm -fr /usr/local/tomcat/webapps/* \
  && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
  && curl $MVN_REPO/openam-distribution-ssoconfiguratortools/$OPENAM_VERSION/openam-distribution-ssoconfiguratortools-$OPENAM_VERSION.zip \
        -o /tmp/ssoconfig.zip \
