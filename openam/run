@@ -22,6 +22,12 @@ function copy_secrets {
 if [ -f /root/openam/bootstrap ]; then
    echo "Bootstrap found. Booting OpenAM"
 
+   if [ ! -d "$HOME/.openamcfg" ]; then
+      echo "Recreating .openamcfg "
+      mkdir -p "$HOME/.openamcfg"
+      echo "/root/openam"  >  "$HOME/.openamcfg/AMConfig_usr_local_tomcat_webapps_openam_"
+   fi
+
    copy_secrets
    exec /usr/local/tomcat/bin/catalina.sh run
 
