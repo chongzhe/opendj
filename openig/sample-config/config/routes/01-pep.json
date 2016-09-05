@@ -12,7 +12,7 @@
               "reason": "Found",
               "headers": {
                 "Location": [
-                  "${env['OPENAM_URL']/XUI/#login/&goto=${urlEncode(contexts.router.originalUri)}"
+                  "${env['OPENAM_URL']}/XUI/#login/&goto=${urlEncode(contexts.router.originalUri)}"
                 ]
               },
               "entity": "Redirecting to OpenAM..."
