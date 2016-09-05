@@ -8,10 +8,11 @@ To run:
 
 docker run -p 8080:8080 -it forgerock/openig
 
-To use OpenIG, mount the IG configuration files on /var/openig
+To use the sample configuration, mount samples-config directory on /var/openig in the container
 
-See the sample docker-compose.yaml file for an example
+docker run -d -p 8080:8080 -v <LOCAL_PATH_TO_GIT>/docker/openig/sample-config:/var/openig --name openig -it forgerock/openig
 
+(Also see the sample docker-compose.yaml file for an example)
 
 ## Sample configuration to test OpenIG 
 
