@@ -139,21 +139,21 @@ cd /var/tmp/config
 copy_secrets
 
 
-# For this image we dont yet do any configuration beyond the basic sso configurator
-# Additional config can be done by another container or a k8s job
+
+#
 # When AM 14 REST config lands we will revisit this
 #
-#if [ -f ssoadm.txt ]; then
-#   echo "Running ssoadm batch commands"
-#   /root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z ssoadm.txt
-#fi
-#
-#
-#if [ -x post-run ]; then
-#   echo "Executing post config script"
-#   ./post-run
-#fi
-#
+if [ -f ssoadm.txt ]; then
+   echo "Running ssoadm batch commands"
+   /root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z ssoadm.txt
+fi
+
+
+if [ -x post-run ]; then
+   echo "Executing post config script"
+   ./post-run
+fi
+
 #echo "Stopping tomcat"
 #
 #
