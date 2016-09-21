@@ -1,6 +1,6 @@
 {
   "handler": {
-    "name": "MyMainRouter",
+    "name": "_router",
     "type": "Router",
     "config": {
       "defaultHandler": {
