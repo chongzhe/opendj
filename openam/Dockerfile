@@ -26,6 +26,7 @@ RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.w
 
 
 # For testing Docker builds use local files instead - much faster
+# If you want a custom openam.war you can also copy in your war file
 #ADD openam.war  /usr/local/tomcat/webapps/openam.war
 #ADD ssoconfigtools.zip /tmp/
 #RUN unzip /tmp/ssoconfigtools -d /var/tmp/ssoconfig
