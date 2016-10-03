@@ -1,5 +1,5 @@
 #
-FROM tomcat:8-jre8
+FROM tomcat:8.5-jre8
 
 MAINTAINER warren.strange@forgerock.com
 
@@ -26,8 +26,6 @@ ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 # If you want a custom openam.war you can also copy in your war file
 ADD openam.war  /usr/local/tomcat/webapps/openam.war
 
-ADD run /var/tmp/
-
 # Generate a default keystore for SSL - only needed if you want SSL inside the cluster
 # You can mount your own keystore on the ssl/ directory to override this
 #RUN mkdir -p /usr/local/tomcat/ssl && \
@@ -43,8 +41,3 @@ ADD run /var/tmp/
 # Use this if OpenAM is behind SSL termination and you want port 8080 to be configured as secure
 # See the server.xml file
 #ADD server.xml /usr/local/tomcat/conf/server.xml
-
-
-
-
-CMD ["/var/tmp/run"]
