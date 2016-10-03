@@ -24,15 +24,27 @@ function wait_for_openam
 	while true
 	do
 		echo "Waiting for OpenAM server at ${CONFIG_URL} "
+
+		curl ${CONFIG_URL}
+
+
 		response=$(curl --write-out %{http_code} --silent --output /dev/null ${CONFIG_URL} )
 
+      echo "Got Response code $response"
       if [ ${response} == "302" ]; then
-         echo "It looks like OpenAM is already configured. Will not reconfigure"
+         echo "Checking to see if OpenAM is already configured. Will not reconfigure"
+
+         curl ${CONFIG_URL} | grep -q "Configuration"
+         if [ $? -eq 0  ]; then
+            break
+         fi
+         echo "It looks like OpenAM is configured already. Exiting"
+
          exit 0
       fi
       if [ ${response} == "200" ];
       then
-         echo "OpenAM web app is up"
+         echo "OpenAM web app is up and ready to be configured"
          break
       fi
 
