@@ -32,7 +32,8 @@ WORKDIR /opt/opendj
 # Creating instance.loc consolidates the writable directories under one root
 # We also create the extensions directory
 # We set a dir manager default password value here, but this is almost
-# certainly not what you want. You should mount a secret volume  - see the README
+# certainly not what you want. This hard coded path to the password
+# should get over mounted by a secret volume with the "real" password. See the README
 RUN echo "/opt/opendj/data" > /opt/opendj/instance.loc  && \
     mkdir -p /opt/opendj/data/lib/extensions && \
     mkdir -p /var/secrets/opendj && \

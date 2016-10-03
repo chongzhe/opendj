@@ -15,20 +15,16 @@ ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openam
 ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 
 # Use this to download an OpenAM build from Maven
-RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
-     -o /tmp/openam.war \
- && rm -fr /usr/local/tomcat/webapps/* \
- && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
- && curl $MVN_REPO/openam-distribution-ssoconfiguratortools/$OPENAM_VERSION/openam-distribution-ssoconfiguratortools-$OPENAM_VERSION.zip \
-       -o /tmp/ssoconfig.zip \
- && unzip /tmp/ssoconfig.zip -d /var/tmp/ssoconfig \
- && rm /tmp/*zip /tmp/*war
+#RUN curl $MVN_REPO/openam-server/$OPENAM_VERSION/openam-server-$OPENAM_VERSION.war \
+#     -o /tmp/openam.war \
+# && rm -fr /usr/local/tomcat/webapps/* \
+# && unzip /tmp/openam.war -d /usr/local/tomcat/webapps/openam \
+# && rm /tmp/openam.war
 
 
 # For testing Docker builds use local files instead - much faster
-#ADD openam.war  /usr/local/tomcat/webapps/openam.war
-#ADD ssoconfigtools.zip /tmp/
-#RUN unzip /tmp/ssoconfigtools -d /var/tmp/ssoconfig
+# If you want a custom openam.war you can also copy in your war file
+ADD openam.war  /usr/local/tomcat/webapps/openam.war
 
 ADD run /var/tmp/
 

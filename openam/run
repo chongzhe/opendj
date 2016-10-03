@@ -1,172 +1,19 @@
 #!/usr/bin/env bash
-# Run OpenAM - optionally configuring the image.
-# Please see the comments inline to understand how this works
-cd /var/tmp
 
+# create the skeleton directory - so copying in keystore works on boot
+mkdir -p /root/openam/openam
 
-# Function to check for secrets (password, keystores) and copy them into the openam root dir
-function copy_secrets {
-   if [ -d /var/secrets/openam ]; then
-      echo "secret volume mounted - will copy any keystores"
-      cp -f  /var/secrets/openam/{.keypass,.storepass,keystore.jceks,keystore.jks} /root/openam/openam 2>/dev/null
-   fi
-
-}
-
-
-
-# The first thing we check is if we need to be configured or not. If there
-# is an existing bootstrap, we just start openam, no need to configure
-# You can mount a volume on /root/openam to get persistence across container restarts
-
-if [ -f /root/openam/bootstrap ]; then
-   echo "Bootstrap found. Booting OpenAM"
-
-   if [ ! -d "$HOME/.openamcfg" ]; then
-      echo "Recreating .openamcfg "
-      mkdir -p "$HOME/.openamcfg"
-      echo "/root/openam"  >  "$HOME/.openamcfg/AMConfig_usr_local_tomcat_webapps_openam_"
-   fi
-
-   copy_secrets
-   exec /usr/local/tomcat/bin/catalina.sh run
-
-   # This should not be reached
-   echo "Tomcat stopped"
-   exit 0
-fi
-
-# No bootstrap - so we need to be configured
-# Check to see if the user (child docker image or a mounted volume) has supplied configuration. If not
-# just default to bringing up OpenAM ready to be configured.
-
-if [ ! -f /var/tmp/config/openam.properties ]; then
-   echo "No bootstrap file, and no configuration files found. Will start OpenAM ready to be configured"
-   /usr/local/tomcat/bin/catalina.sh run
-
-   # This should not be reached
-   echo "Tomcat stopped"
-   exit 0
+if [ -d /var/secrets/openam ]; then
+   echo "secret volume mounted - will copy secrets"
+   cp -f  /var/secrets/openam/{.keypass,.storepass,keystore.jceks,keystore.jks} /root/openam 2>/dev/null
 fi
 
 
-# After this point, we have a set of config files mounted on /var/tmp/config - so we configure the image
-# Source user provided env vars from child image
-
-if [ -f "config/env.sh" ]; then
-   source config/env.sh
+if [ ! -d "$HOME/.openamcfg" ]; then
+   echo "Recreating .openamcfg "
+   mkdir -p "$HOME/.openamcfg"
+   echo "/root/openam"  >  "$HOME/.openamcfg/AMConfig_usr_local_tomcat_webapps_openam_"
 fi
 
 
-# If there is a secret volume mounted we use that for the amadmin password instead of default in env.sh
-ADMIN_PW_FILE="${ADMIN_PW_FILE:-/var/secrets/openam/admin.pw}"
-if [ -f "${ADMIN_PW_FILE}" ]; then
-   echo "Using amadmin password from secret file $ADMIN_PW_FILE"
-    ADMIN_PWD=`cat ${ADMIN_PW_FILE}`
-fi
-
-
-# Password for the config store. Used if we are using an external config store
-DIR_MANAGER_PW_FILE="${DIR_MANAGER_PW_FILE:-/var/secrets/opendj/dirmanager.pw}"
-if [ -f "${DIR_MANAGER_PW_FILE}" ]; then
-   echo "Using OpenDJ password from secret file $DIR_MANAGER_PW_FILE"
-   DIR_MANAGER_PWD=`cat ${DIR_MANAGER_PW_FILE}`
-fi
-
-
-# Function to wait for OpenAM to come up before configuring it
-# args  $1 - server URL
-# $2 - deployment URI
-function wait_for_openam
-{
-	T="$1/openam/config/options.htm"
-
-	until $(curl --output /dev/null --silent --head --fail $T); do
-		echo "Waiting for OpenAM server at $T "
-    sleep 5
-	done
-	# Sleep an additonal time in case DJ is not quite up yet
-	sleep 15
-   echo "About to begin configuration"
-}
-
-
-# Function to do var expansion the openam.properties template file based on exported variables
-function do_template
-{
-	cat config/openam.properties | while read -r line; do
-		while [[ "$line" =~ (\$\{[a-zA-Z_][a-zA-Z_0-9]*\}) ]] ; do
-	        LHS=${BASH_REMATCH[1]}
-	        RHS="$(eval echo "\"$LHS\"")"
-	        line=${line//$LHS/$RHS}
-	  done
-    echo "$line" >>/tmp/am.properties
-	done
-	# Debug
-	#echo "Final AM Config file:"
-	#cat /tmp/am.properties
-}
-
-
-# Start tomcat - but in the background so we can complete configuration
-echo "Starting tomcat"
-/usr/local/tomcat/bin/catalina.sh start
-
-# template out env.sh vars
-do_template
-
-# OpenAM needs its fqdn in /etc/hosts
-# Using 127.0.0.2 is a trick that works the samee as localhost
-echo "127.0.0.2  $FQDN_HOSTNAME" >> /etc/hosts
-wait_for_openam  $SERVER_URL
-
-
-cd /var/tmp/ssoconfig
-
-# Now run the configurator
-java -jar openam-configurator-tool*.jar -f /tmp/am.properties
-
-
-# For debugging...
-#ls -lR /root/openam
-#cat /root/openam/install.log
-#cat /usr/local/tomcat/logs/*
-
-
-cd /var/tmp/config
-
-# Copy any secrets, keystores, etc.
-copy_secrets
-
-
-# For this image we dont yet do any configuration beyond the basic sso configurator
-# Additional config can be done by another container or a k8s job
-# When AM 14 REST config lands we will revisit this
-#
-#if [ -f ssoadm.txt ]; then
-#   echo "Running ssoadm batch commands"
-#   /root/admintools/ssoadm do-batch -u amadmin -f /root/.amadminpw -Z ssoadm.txt
-#fi
-#
-#
-#if [ -x post-run ]; then
-#   echo "Executing post config script"
-#   ./post-run
-#fi
-#
-#echo "Stopping tomcat"
-#
-#
-#/usr/local/tomcat/bin/catalina.sh stop
-
-
-echo "Configuration done"
-
-#
-# We cant exit because that will kill the container...
-while true; do
-   tail -f /usr/local/tomcat/logs/catalina.out
-   sleep 100
-done
-
-echo "done"
+exec /usr/local/tomcat/bin/catalina.sh run
