@@ -7,13 +7,11 @@ WORKDIR /opt
 #ADD agent.zip /var/tmp/agent.zip
 
 
-
 RUN apt-get update && apt-get install --no-install-recommends  -y unzip curl && \
-     curl "http://download.forgerock.org/downloads/openam/webagents/nightly/Linux/Apache_v24_Linux_64bit_4.0.0-SNAPSHOT.zip" \
+     curl "http://download.forgerock.org/downloads/openam/webagents/nightly/Linux/Apache_v24_Linux_64bit_5.0.0-SNAPSHOT.zip" \
                -o /var/tmp/agent.zip && \
       unzip /var/tmp/agent.zip && rm /var/tmp/agent.zip && \
       echo "password" >/var/tmp/pw.txt  && chmod 0400 /var/tmp/pw.txt && \
-
       rm -rf /var/lib/apt/lists/*
 
 
@@ -34,6 +32,10 @@ RUN /opt/web_agents/apache24_agent/bin/agentadmin --s /usr/local/apache2/conf/ht
         "apacheagent" \
         /var/tmp/pw.txt \
         --changeOwner --acceptLicence --forceInstall
+
+# Cache size in bytes. The default is 1.5 GB. On Docker you need to run with --shm-size
+# Set this down lower for testing purposes
+ENV AM_MAX_SHARED_POOL_SIZE 1048576000
 
 # todo: We should let above command create the conf file
 #COPY agent.conf /opt/web_agents/apache24_agent/instances/agent_1/config/agent.conf

@@ -31,6 +31,15 @@ From a strategy perspective there are couple of choices:
 - Use a  Kubernetes secret volume and mount it on /secrets/ and use that to bootstrap the agent password
 
 
+# Known Issues
+
+The agent requires a large shm cache (1.5G)
+For docker, you can run with 
+docker run --shm-size=2g forgerock/apache-agent 
+
+
+For Kubernetes watch this bugid:
+https://github.com/kubernetes/kubernetes/issues/28272
 
 
 # List of required  bootstrap  properties (from Mareks)

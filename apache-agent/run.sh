@@ -6,7 +6,7 @@
 : ${AGENT_PW:=password}
 : ${AGENT_PW_KEY:=OWNjOTM5NmItNzUxYS0zZQ==}
 : ${AGENT_USER:=apacheagent}
-: ${AGENT_NAMING_URL:="http://openam-svc:80/openam"}
+: ${AGENT_NAMING_URL:="http://openam:80/openam"}
 
 # todo: See if /secrets/apache-agent-pw exists. If it does - override the env var
 # If it does, use that to bootstrap the agent secret 
