@@ -26,6 +26,10 @@ ENV OPENAM_VERSION=14.0.0-SNAPSHOT
 # If you want a custom openam.war you can also copy in your war file
 ADD openam.war  /usr/local/tomcat/webapps/openam.war
 
+# Premake the path and config dir
+RUN mkdir -p /root/openam/openam && mkdir -p /root/.openamcfg \
+  && echo "/root/openam" > /root/.openamcfg/AMConfig_usr_local_tomcat_webapps_openam_
+
 # Generate a default keystore for SSL - only needed if you want SSL inside the cluster
 # You can mount your own keystore on the ssl/ directory to override this
 #RUN mkdir -p /usr/local/tomcat/ssl && \
@@ -41,3 +45,6 @@ ADD openam.war  /usr/local/tomcat/webapps/openam.war
 # Use this if OpenAM is behind SSL termination and you want port 8080 to be configured as secure
 # See the server.xml file
 #ADD server.xml /usr/local/tomcat/conf/server.xml
+
+# Settings for tomcat cache.
+ADD context.xml /usr/local/tomcat/conf/context.xml
