@@ -28,7 +28,7 @@ function download {
 
 function buildDocker {
    ${DRYRUN} docker build -t ${REPO}/$1:${TAG} $1
-   if [[ -v PUSH ]]; then
+   if [ -n "$PUSH" ]; then
       ${DRYRUN} docker push ${REPO}/$1
    fi
 }

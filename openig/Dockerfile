@@ -24,7 +24,7 @@ EXPOSE 8080 8443
 
 # If you want to use your own custom ig, use these lines
 #ADD openig.war webapps/ROOT.war
-#ADD run-openig.sh /tmp/run-openig.sh
+
 
 # otherwise, pull down IG from the Maven repo
 ENV MVN_REPO=https://maven.forgerock.org/repo/repo/org/forgerock/openig
@@ -35,5 +35,3 @@ RUN curl $MVN_REPO/openig-war/$OPENIG_VERSION/openig-war-$OPENIG_VERSION.war \
  && unzip /tmp/openig.war -d /usr/local/tomcat/webapps/ROOT \
  && rm -f /tmp/*zip
 
-
-CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]

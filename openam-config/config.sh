@@ -74,4 +74,7 @@ java -jar openam-configurator-tool*.jar -f /var/tmp/config/openam.properties
 # Todo
 # When amster is done - add additional commands here..:
 
+# For debugging purposes it is handy to leave the container running by sleeping
+sleep 5000
+
 echo "done"
