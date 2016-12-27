@@ -4,6 +4,7 @@ opendj:
   build: .
   ports:
    - "389:389"
+   - "636:636"
   environment:
     # Uncomment this to bootstrap to the CTS sample
     #BOOTSTRAP: /opt/opendj/bootstrap/cts/setup.sh
