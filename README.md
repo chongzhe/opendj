@@ -1,3 +1,6 @@
+[![Insight.io](https://insight.io/repoBadge/github.com/tesseract-ocr/tesseract)](https://insight.io/github.com/tesseract-ocr/tesseract)
+
+
 # Docker build files for the ForgeRock stack
 
 ## Warning
